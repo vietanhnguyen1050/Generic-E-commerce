@@ -1,0 +1,219 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// =========================================================
+// Product catalog
+// =========================================================
+
+// Danh mục chính của sản phẩm.
+model MainCategories {
+  id            Int             @id @default(autoincrement())
+  mainCategory  String          @unique
+  subCategories SubCategories[]
+  products      Products[]
+  userActivities UserActivities[]
+}
+
+// Danh mục con của sản phẩm.
+model SubCategories {
+  id           Int              @id @default(autoincrement())
+  subCategory  String           @unique
+  mainCategoryId Int?
+  mainCategory MainCategories?  @relation(fields: [mainCategoryId], references: [id])
+  products     Products[]
+  userActivities UserActivities[]
+}
+
+// Sản phẩm điện tử.
+model Products {
+  id               Int              @id @default(autoincrement())
+  mainCategoryId   Int
+  mainCategory     MainCategories   @relation(fields: [mainCategoryId], references: [id])
+  subCategoryId    Int
+  subCategory      SubCategories    @relation(fields: [subCategoryId], references: [id])
+  name             String
+  imageUrl         String
+  originalUrl      String
+  ratings          Float
+  numberOfRatings  Int
+  discountPrice    Float
+  actualPrice      Float
+  quantity         Int
+  updatedAt        DateTime         @updatedAt
+
+  cartItems        CartItems[]
+  orderItems       OrderItems[]
+  reviews          Reviews[]
+  userActivities    UserActivities[]
+}
+
+// =========================================================
+// Users and locations
+// =========================================================
+
+// Phân quyền người dùng.
+model Roles {
+  id    Int     @id @default(autoincrement())
+  Role  String  @unique
+  users Users[]
+}
+
+// Thành phố / khu vực giao hàng.
+model Cities {
+  id    Int     @id @default(autoincrement())
+  City  String  @unique
+  addresses Address[]
+}
+
+// Người dùng hệ thống.
+model Users {
+  id                Int              @id @default(autoincrement())
+  roleId            Int
+  role              Roles            @relation(fields: [roleId], references: [id])
+  firebase_Uid      String           @unique
+  email             String           @unique
+  displayName       String
+  phoneNumber       String           @unique
+  createdAt         DateTime         @default(now())
+  totalValuePurchased Float          @default(0)
+
+  addresses         Address[]
+  carts             Carts[]
+  orders            Orders[]
+  reviews           Reviews[]
+  userActivities    UserActivities[]
+}
+
+// Địa chỉ giao hàng của người dùng.
+model Address {
+  id              Int      @id @default(autoincrement())
+  userId          Int
+  user            Users    @relation(fields: [userId], references: [id])
+  cityId          Int
+  city            Cities   @relation(fields: [cityId], references: [id])
+  addressLine     String
+  isDefault       Boolean  @default(false)
+  noteForDelivery String
+}
+
+// =========================================================
+// Cart and checkout
+// =========================================================
+
+// Giỏ hàng.
+model Carts {
+  id           Int         @id @default(autoincrement())
+  userId       Int
+  user         Users       @relation(fields: [userId], references: [id])
+  sessionToken String      @unique
+  updatedAt    DateTime    @updatedAt
+
+  cartItems    CartItems[]
+}
+
+// Sản phẩm trong giỏ hàng.
+model CartItems {
+  id        Int      @id @default(autoincrement())
+  cartId    Int
+  cart      Carts    @relation(fields: [cartId], references: [id])
+  productId Int
+  product   Products @relation(fields: [productId], references: [id])
+  quantity  Int
+}
+
+// Đơn hàng.
+model Orders {
+  id          Int        @id @default(autoincrement())
+  userId      Int
+  user        Users      @relation(fields: [userId], references: [id])
+  totalAmount Float
+  status      OrderStatus
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  orderItems  OrderItems[]
+  payments    Payments[]
+}
+
+// Sản phẩm trong đơn hàng.
+model OrderItems {
+  id             Int      @id @default(autoincrement())
+  orderId        Int
+  order          Orders   @relation(fields: [orderId], references: [id])
+  productId      Int
+  product        Products @relation(fields: [productId], references: [id])
+  quantity       Int
+  priceAtPurchase Float
+}
+
+// Thanh toán.
+model Payments {
+  id               Int      @id @default(autoincrement())
+  orderId          Int
+  order            Orders   @relation(fields: [orderId], references: [id])
+  transactionId    String   @unique
+  paymentMethod    String
+  status           String
+  gatewayResponse  String
+  amount           Float
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  FAILED
+}
+
+// =========================================================
+// Reviews and recommendation signals
+// =========================================================
+
+// Đánh giá sản phẩm.
+model Reviews {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      Users    @relation(fields: [userId], references: [id])
+  productId Int
+  product   Products @relation(fields: [productId], references: [id])
+  rating    Int
+  comment   String
+  createdAt DateTime @default(now())
+}
+
+// Hành vi người dùng phục vụ gợi ý sản phẩm.
+model Activities {
+  id       Int             @id @default(autoincrement())
+  activity String          @unique
+  point    Int
+
+  userActivities UserActivities[]
+}
+
+// Lịch sử hoạt động của người dùng trên hệ thống.
+model UserActivities {
+  id              Int            @id @default(autoincrement())
+  userId          Int
+  user            Users          @relation(fields: [userId], references: [id])
+  productId       Int
+  product         Products       @relation(fields: [productId], references: [id])
+  mainCategoryId  Int
+  mainCategory    MainCategories @relation(fields: [mainCategoryId], references: [id])
+  subCategoryId   Int
+  subCategory     SubCategories  @relation(fields: [subCategoryId], references: [id])
+  activityId      Int
+  activity        Activities     @relation(fields: [activityId], references: [id])
+  timeStamp       DateTime       @default(now())
+  metaData        String
+}
