@@ -45,6 +45,7 @@ model Products {
   discountPrice    Float
   actualPrice      Float
   quantity         Int
+  available        Boolean          @default(true)
   updatedAt        DateTime         @updatedAt
 
   cartItems        CartItems[]
@@ -82,6 +83,7 @@ model Users {
   phoneNumber       String           @unique
   createdAt         DateTime         @default(now())
   totalValuePurchased Float          @default(0)
+  deleted           Boolean          @default(false)
 
   addresses         Address[]
   carts             Carts[]
