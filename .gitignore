@@ -4,7 +4,7 @@ client/node_modules
 server/node_modules
 client/dist
 server/dist
-.env
+**.env
 client/.env
 server/.env
 *.pdf
