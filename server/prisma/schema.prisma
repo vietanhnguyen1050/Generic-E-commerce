@@ -42,8 +42,8 @@ model Products {
   originalUrl      String
   ratings          Float
   numberOfRatings  Int
-  discountPrice    Float
-  actualPrice      Float
+  discountPrice    Int
+  actualPrice      Int
   quantity         Int
   available        Boolean          @default(true)
   updatedAt        DateTime         @updatedAt
@@ -97,6 +97,8 @@ model Address {
   id              Int      @id @default(autoincrement())
   userId          Int
   user            Users    @relation(fields: [userId], references: [id])
+  phoneNumber     String
+  customName      String
   cityId          Int
   city            Cities   @relation(fields: [cityId], references: [id])
   addressLine     String

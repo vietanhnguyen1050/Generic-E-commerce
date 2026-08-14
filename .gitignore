@@ -1,4 +1,5 @@
 node_modules
+read-now-ecom
 client/node_modules
 server/node_modules
 client/dist
@@ -10,3 +11,4 @@ server/.env
 *.docx
 *.csv
 *.zip
+*.jpg
