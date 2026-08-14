@@ -16,11 +16,8 @@ import { Route as DatHangThanhCongRouteImport } from './routes/dat-hang-thanh-co
 import { Route as GioHangRouteImport } from './routes/gio-hang'
 import { Route as TaiKhoanRouteImport } from './routes/tai-khoan'
 import { Route as ThanhToanRouteImport } from './routes/thanh-toan'
-import { Route as ApiOrdersRouteImport } from './routes/api/orders'
-import { Route as ApiProductsRouteImport } from './routes/api/products'
 import { Route as SanPhamIndexRouteImport } from './routes/san-pham.index'
 import { Route as SanPhamIdRouteImport } from './routes/san-pham.$id'
-import { Route as ApiProductsIdRouteImport } from './routes/api/products.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -57,16 +54,6 @@ const ThanhToanRoute = ThanhToanRouteImport.update({
   path: '/thanh-toan',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiOrdersRoute = ApiOrdersRouteImport.update({
-  id: '/api/orders',
-  path: '/api/orders',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiProductsRoute = ApiProductsRouteImport.update({
-  id: '/api/products',
-  path: '/api/products',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const SanPhamIndexRoute = SanPhamIndexRouteImport.update({
   id: '/san-pham/',
   path: '/san-pham/',
@@ -77,11 +64,6 @@ const SanPhamIdRoute = SanPhamIdRouteImport.update({
   path: '/san-pham/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiProductsIdRoute = ApiProductsIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => ApiProductsRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -91,11 +73,8 @@ export interface FileRoutesByFullPath {
   '/gio-hang': typeof GioHangRoute
   '/tai-khoan': typeof TaiKhoanRoute
   '/thanh-toan': typeof ThanhToanRoute
-  '/api/orders': typeof ApiOrdersRoute
-  '/api/products': typeof ApiProductsRouteWithChildren
   '/san-pham/$id': typeof SanPhamIdRoute
   '/san-pham/': typeof SanPhamIndexRoute
-  '/api/products/$id': typeof ApiProductsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -105,11 +84,8 @@ export interface FileRoutesByTo {
   '/gio-hang': typeof GioHangRoute
   '/tai-khoan': typeof TaiKhoanRoute
   '/thanh-toan': typeof ThanhToanRoute
-  '/api/orders': typeof ApiOrdersRoute
-  '/api/products': typeof ApiProductsRouteWithChildren
   '/san-pham/$id': typeof SanPhamIdRoute
   '/san-pham': typeof SanPhamIndexRoute
-  '/api/products/$id': typeof ApiProductsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -120,11 +96,8 @@ export interface FileRoutesById {
   '/gio-hang': typeof GioHangRoute
   '/tai-khoan': typeof TaiKhoanRoute
   '/thanh-toan': typeof ThanhToanRoute
-  '/api/orders': typeof ApiOrdersRoute
-  '/api/products': typeof ApiProductsRouteWithChildren
   '/san-pham/$id': typeof SanPhamIdRoute
   '/san-pham/': typeof SanPhamIndexRoute
-  '/api/products/$id': typeof ApiProductsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -136,11 +109,8 @@ export interface FileRouteTypes {
     | '/gio-hang'
     | '/tai-khoan'
     | '/thanh-toan'
-    | '/api/orders'
-    | '/api/products'
     | '/san-pham/$id'
     | '/san-pham/'
-    | '/api/products/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -150,11 +120,8 @@ export interface FileRouteTypes {
     | '/gio-hang'
     | '/tai-khoan'
     | '/thanh-toan'
-    | '/api/orders'
-    | '/api/products'
     | '/san-pham/$id'
     | '/san-pham'
-    | '/api/products/$id'
   id:
     | '__root__'
     | '/'
@@ -164,11 +131,8 @@ export interface FileRouteTypes {
     | '/gio-hang'
     | '/tai-khoan'
     | '/thanh-toan'
-    | '/api/orders'
-    | '/api/products'
     | '/san-pham/$id'
     | '/san-pham/'
-    | '/api/products/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -179,8 +143,6 @@ export interface RootRouteChildren {
   GioHangRoute: typeof GioHangRoute
   TaiKhoanRoute: typeof TaiKhoanRoute
   ThanhToanRoute: typeof ThanhToanRoute
-  ApiOrdersRoute: typeof ApiOrdersRoute
-  ApiProductsRoute: typeof ApiProductsRouteWithChildren
   SanPhamIdRoute: typeof SanPhamIdRoute
   SanPhamIndexRoute: typeof SanPhamIndexRoute
 }
@@ -236,20 +198,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ThanhToanRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/orders': {
-      id: '/api/orders'
-      path: '/api/orders'
-      fullPath: '/api/orders'
-      preLoaderRoute: typeof ApiOrdersRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/products': {
-      id: '/api/products'
-      path: '/api/products'
-      fullPath: '/api/products'
-      preLoaderRoute: typeof ApiProductsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/san-pham/': {
       id: '/san-pham/'
       path: '/san-pham'
@@ -264,27 +212,8 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SanPhamIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/products/$id': {
-      id: '/api/products/$id'
-      path: '/$id'
-      fullPath: '/api/products/$id'
-      preLoaderRoute: typeof ApiProductsIdRouteImport
-      parentRoute: typeof ApiProductsRoute
-    }
   }
 }
-
-interface ApiProductsRouteChildren {
-  ApiProductsIdRoute: typeof ApiProductsIdRoute
-}
-
-const ApiProductsRouteChildren: ApiProductsRouteChildren = {
-  ApiProductsIdRoute: ApiProductsIdRoute,
-}
-
-const ApiProductsRouteWithChildren = ApiProductsRoute._addFileChildren(
-  ApiProductsRouteChildren,
-)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -294,8 +223,6 @@ const rootRouteChildren: RootRouteChildren = {
   GioHangRoute: GioHangRoute,
   TaiKhoanRoute: TaiKhoanRoute,
   ThanhToanRoute: ThanhToanRoute,
-  ApiOrdersRoute: ApiOrdersRoute,
-  ApiProductsRoute: ApiProductsRouteWithChildren,
   SanPhamIdRoute: SanPhamIdRoute,
   SanPhamIndexRoute: SanPhamIndexRoute,
 }

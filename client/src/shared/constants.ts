@@ -11,6 +11,8 @@ export const API_ROUTES = {
   products: "/api/products",
   product: (id: string) => `/api/products/${id}`,
   orders: "/api/orders",
+  cart: "/api/cart",
+  cartItem: (productId: string) => `/api/cart/items/${productId}`,
 } as const;
 
 export const SORT_OPTIONS = [

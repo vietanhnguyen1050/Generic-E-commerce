@@ -161,26 +161,6 @@ export function Header() {
         </div>
       </form>
 
-      <nav className="hidden border-t border-white/10 lg:block">
-        <div className="container mx-auto flex items-center gap-1 overflow-x-auto px-4 py-2 text-sm">
-          <Link
-            to="/san-pham"
-            className="rounded-md px-3 py-1.5 font-medium text-white/90 hover:bg-white/10"
-          >
-            {t("header.allProducts")}
-          </Link>
-          {categories.map((c) => (
-            <Link
-              key={c.slug}
-              to="/san-pham"
-              search={{ danh_muc: c.slug }}
-              className="whitespace-nowrap rounded-md px-3 py-1.5 text-white/75 hover:bg-white/10 hover:text-white"
-            >
-              {c.name}
-            </Link>
-          ))}
-        </div>
-      </nav>
     </header>
   );
 }

@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ProductImage } from "@/frontend/components/site/ProductImage";
 import { SiteLayout } from "@/frontend/components/site/SiteLayout";
 import { useCart } from "@/frontend/lib/cart";
 import { FREE_SHIPPING_THRESHOLD, calcShippingFee } from "@/shared/constants";
@@ -38,7 +39,7 @@ export function CartPage() {
                 key={l.id}
                 className="flex gap-4 rounded-xl border border-border bg-surface p-4"
               >
-                <img
+                <ProductImage
                   src={l.image}
                   alt={l.name}
                   width={120}

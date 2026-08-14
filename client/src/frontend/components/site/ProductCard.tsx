@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/frontend/lib/cart";
 import { formatVnd } from "@/shared/format";
+import { ProductImage } from "@/frontend/components/site/ProductImage";
 import type { Product } from "@/shared/types";
 
 export function ProductCard({ product }: { product: Product }) {
@@ -17,7 +18,7 @@ export function ProductCard({ product }: { product: Product }) {
         params={{ id: product.id }}
         className="relative block overflow-hidden bg-white"
       >
-        <img
+        <ProductImage
           src={product.image}
           alt={product.name}
           loading="lazy"

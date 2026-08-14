@@ -16,9 +16,24 @@ export const api = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
-// Request interceptor: gắn ID token của Firebase khi người dùng đã đăng nhập.
+export function getSessionToken(): string {
+  if (typeof window === "undefined") return "";
+  let token = window.localStorage.getItem("zenova.sessionToken");
+  if (!token) {
+    token = `st_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
+    window.localStorage.setItem("zenova.sessionToken", token);
+  }
+  return token;
+}
+
+// Request interceptor: gắn ID token của Firebase khi người dùng đã đăng nhập và sessionToken cho giỏ hàng.
 api.interceptors.request.use(async (config) => {
   if (typeof window !== "undefined") {
+    const sessionToken = getSessionToken();
+    if (sessionToken) {
+      config.headers["x-session-token"] = sessionToken;
+    }
+
     const user = getFirebaseAuth()?.currentUser;
     if (user) {
       const token = await user.getIdToken();

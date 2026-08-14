@@ -20,7 +20,7 @@ export const validateCreateItem = (payload: unknown): CreateItemInput => {
   }
 
   return {
-    name: name.trim(),
+    name: typeof name === "string" ? name.trim() : "",
     description: typeof description === "string" ? description.trim() : undefined
   };
 };

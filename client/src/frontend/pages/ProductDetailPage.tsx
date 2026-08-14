@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ProductCard } from "@/frontend/components/site/ProductCard";
+import { ProductImage } from "@/frontend/components/site/ProductImage";
 import { SiteLayout } from "@/frontend/components/site/SiteLayout";
 import { useProduct } from "@/frontend/api/hooks";
 import { useCart } from "@/frontend/lib/cart";
@@ -71,7 +72,7 @@ export function ProductDetailPage({ id }: { id: string }) {
 
         <div className="grid gap-8 lg:grid-cols-[1fr_1fr]">
           <div className="rounded-2xl border border-border bg-white p-6">
-            <img
+            <ProductImage
               src={product.image}
               alt={product.name}
               width={800}
